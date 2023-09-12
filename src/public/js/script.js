@@ -1,22 +1,33 @@
-const socket = io();
-
-// Escuchar nuevos mensajes del servidor
-socket.on('mensajeNuevo', (message) => {
-    // Agregar el nuevo mensaje al historial de chat
-    const historialChat = document.getElementById('historialChat');
-    const mensajeNuevo = document.createElement('li');
-    mensajeNuevo.innerHTML = `<strong>${message.email}:</strong> ${message.message}`;
-    historialChat.appendChild(mensajeNuevo);
-});
-
-// Manejar el envío del formulario
-const form = document.getElementById('chatForm');
-form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const email = document.getElementById('email').value;
-    const message = document.getElementById('message').value;
-    socket.emit('mensajeNuevo', { email, message });
-
-    // Limpiar el campo de mensaje después del envío
-    document.getElementById('message').value = '';
+document.addEventListener('DOMContentLoaded', () => {
+    const socket = io();
+    
+    const enviarMensajeButton = document.getElementById('enviarMensaje');
+    const messageInput = document.getElementById('message');
+    
+    enviarMensajeButton.addEventListener('click', () => {
+        enviarMensaje();
+    });
+    
+    messageInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            enviarMensaje();
+        }
+    });
+    
+    function enviarMensaje() {
+        const email = document.getElementById('email').value;
+        const message = document.getElementById('message').value;
+        
+        socket.emit('enviarMensaje', { email, message });
+        
+        document.getElementById('message').value = '';
+    }
+    
+    socket.on('mensajeNuevo', (message) => {
+        const messagesContainer = document.getElementById('messagesContainer');
+        const newMessageDiv = document.createElement('div');
+        newMessageDiv.innerHTML = `<p>${message.email}: ${message.message}</p>`;
+        messagesContainer.appendChild(newMessageDiv);
+    });
 });

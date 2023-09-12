@@ -9,6 +9,7 @@ import { Server } from 'socket.io';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import handlebars from 'handlebars';
+import { messageModel } from './models/messages.models.js';
 handlebars.SafeString.prototype['handlebars|disable-root-check'] = true;
 
 
@@ -25,7 +26,7 @@ const server = app.listen(PORT, () => {
 
 const io = new Server(server);
 
-mongoose.connect('mongodb+srv://LeoRizza:password***@cluster0.yhmy0qn.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://LeoRizza:034ziCr5lJ1Mz3e9@cluster0.yhmy0qn.mongodb.net/?retryWrites=true&w=majority')
     .then(async () => {
         console.log('BDD conectada')
     })
@@ -39,12 +40,12 @@ io.on('connection', async (socket) => {
     socket.on('mensajeConexion', (info) => {
         console.log(info);
     });
-    socket.on('mensajeNuevo', async (message) => {
+    socket.on('enviarMensaje', async (data) => {
         try {
-            const newMessage = new messageModel(message);
+            const newMessage = new messageModel(data);
             await newMessage.save();
-    
-            // Emitir el mensaje a todos los clientes conectados, incluido el emisor
+
+            // Emite el mensaje a todos los clientes conectados, incluido el emisor
             io.emit('mensajeNuevo', newMessage);
         } catch (error) {
             console.error('Error al guardar el mensaje en la base de datos:', error);
