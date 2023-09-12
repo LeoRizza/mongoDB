@@ -1,0 +1,35 @@
+[33mcommit ca787c1acc89938b4cf593338926bdc945d59c9e[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: lrizza <leonardorizza@hotmail.com>
+Date:   Tue Sep 12 01:09:26 2023 -0300
+
+    desafio mongo y handlebar, chat completo2
+
+[1mdiff --git a/src/app.js b/src/app.js[m
+[1mindex af80015..adce6a5 100644[m
+[1m--- a/src/app.js[m
+[1m+++ b/src/app.js[m
+[36m@@ -45,7 +45,6 @@[m [mio.on('connection', async (socket) => {[m
+             const newMessage = new messageModel(data);[m
+             await newMessage.save();[m
+ [m
+[31m-            // Emite el mensaje a todos los clientes conectados, incluido el emisor[m
+             io.emit('mensajeNuevo', newMessage);[m
+         } catch (error) {[m
+             console.error('Error al guardar el mensaje en la base de datos:', error);[m
+[1mdiff --git a/src/views/home.handlebars b/src/views/home.handlebars[m
+[1mindex 9c8484e..f0af233 100644[m
+[1m--- a/src/views/home.handlebars[m
+[1m+++ b/src/views/home.handlebars[m
+[36m@@ -1,12 +1,3 @@[m
+[31m-{{!-- <div>[m
+[31m-    <h2>Lista de Productos</h2>[m
+[31m-    <ul>[m
+[31m-        {{#each productos}}[m
+[31m-            <li>{{this.title}} - {{this.description}} - {{this.price}}</li>[m
+[31m-        {{/each}}[m
+[31m-    </ul>[m
+[31m-</div> --}}[m
+[31m-[m
+ <div>[m
+     <h2>Lista de Productos</h2>[m
+     <ul id="realTimeProductsList">[m
