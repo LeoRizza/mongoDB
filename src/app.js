@@ -26,7 +26,7 @@ const server = app.listen(PORT, () => {
 
 const io = new Server(server);
 
-mongoose.connect('mongodb+srv://LeoRizza:034ziCr5lJ1Mz3e9@cluster0.yhmy0qn.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://LeoRizza:password**@cluster0.yhmy0qn.mongodb.net/?retryWrites=true&w=majority')
     .then(async () => {
         console.log('BDD conectada')
     })

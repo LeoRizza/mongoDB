@@ -31,3 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
         messagesContainer.appendChild(newMessageDiv);
     });
 });
+
+const messagesContainer = document.getElementById('messagesContainer');
+
+function scrollToBottom() {
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+scrollToBottom();
+
