@@ -1,3 +1,10 @@
+const messagesContainer = document.getElementById('messagesContainer');
+
+function scrollToBottom() {
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+scrollToBottom();
+
 document.addEventListener('DOMContentLoaded', () => {
     const socket = io();
     
@@ -20,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const message = document.getElementById('message').value;
         
         socket.emit('enviarMensaje', { email, message });
-        
         document.getElementById('message').value = '';
     }
     
@@ -29,13 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const newMessageDiv = document.createElement('div');
         newMessageDiv.innerHTML = `<p>${message.email}: ${message.message}</p>`;
         messagesContainer.appendChild(newMessageDiv);
+        scrollToBottom();
     });
 });
-
-const messagesContainer = document.getElementById('messagesContainer');
-
-function scrollToBottom() {
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
-scrollToBottom();
 
