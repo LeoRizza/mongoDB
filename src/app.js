@@ -45,7 +45,6 @@ io.on('connection', async (socket) => {
             const newMessage = new messageModel(data);
             await newMessage.save();
 
-            // Emite el mensaje a todos los clientes conectados, incluido el emisor
             io.emit('mensajeNuevo', newMessage);
         } catch (error) {
             console.error('Error al guardar el mensaje en la base de datos:', error);
