@@ -2,6 +2,16 @@ body {
     background-color: rgb(53, 106, 165);
     color: aliceblue;
 }
+
+footer {
+    border-top: solid 2px white;
+    margin-top: 20px;
+    padding-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+}
+
 .contenedor {
     display: flex;
     flex-direction: column;

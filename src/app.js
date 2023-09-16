@@ -22,7 +22,7 @@ const server = app.listen(PORT, () => {
 
 const io = new Server(server);
 
-mongoose.connect('mongodb+srv://LeoRizza:password**@cluster0.yhmy0qn.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://LeoRizza:password***@cluster0.yhmy0qn.mongodb.net/?retryWrites=true&w=majority')
     .then(async () => {
         console.log('BDD conectada')
     })
@@ -32,10 +32,16 @@ app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')));
 
 io.on('connection', async (socket) => {
-    console.log("Servidor Socket.io conectado");
+    console.log("Servidor Socket.io conectaado");
     socket.on('mensajeConexion', (info) => {
         console.log(info);
     });
+    try {
+        const messages = await messageModel.find().sort({ postTime: 1 }).lean();
+        socket.emit('mensajesPrevios', messages);
+    } catch (error) {
+        console.error('Error al obtener mensajes previos:', error);
+    }
     socket.on('enviarMensaje', async (data) => {
         try {
             const newMessage = new messageModel(data);
@@ -57,10 +63,10 @@ app.use('/api/products', productRouter)
 app.use('/api/carts', cartRouter)
 app.use('/api/chat', chatRouter);
 
-app.get('/static', async (req, res) => {
-    res.render('home', {
+app.get('/products', async (req, res) => {
+    res.render('products', {
         css: "style.css",
-        titulo: "Ecommerce backend",
+        titulo: "Productos Ecomerce",
     });
 });
 

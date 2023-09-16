@@ -37,5 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
         messagesContainer.appendChild(newMessageDiv);
         scrollToBottom();
     });
+    socket.on('mensajesPrevios', (messages) => {
+        messages.forEach((message) => {
+            const newMessageDiv = document.createElement('div');
+            newMessageDiv.innerHTML = `<p>${message.email}: ${message.message}</p>`;
+            messagesContainer.appendChild(newMessageDiv);
+        });
+        scrollToBottom();
+    });
+    
 });
-
