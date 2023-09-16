@@ -8,10 +8,7 @@ import { engine } from 'express-handlebars';
 import { Server } from 'socket.io';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import handlebars from 'handlebars';
 import { messageModel } from './models/messages.models.js';
-handlebars.SafeString.prototype['handlebars|disable-root-check'] = true;
-
 
 const app = express()
 const PORT = 8080;
@@ -23,10 +20,9 @@ const server = app.listen(PORT, () => {
     console.log(`Servidor puerto: ${PORT}`);
 });
 
-
 const io = new Server(server);
 
-mongoose.connect('mongodb+srv://LeoRizza:password***@cluster0.yhmy0qn.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://LeoRizza:password*@cluster0.yhmy0qn.mongodb.net/?retryWrites=true&w=majority')
     .then(async () => {
         console.log('BDD conectada')
     })
