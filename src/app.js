@@ -9,6 +9,7 @@ import { Server } from 'socket.io';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { messageModel } from './models/messages.models.js';
+import { productModel } from './models/products.models.js'
 
 const app = express()
 const PORT = 8080;
@@ -22,7 +23,7 @@ const server = app.listen(PORT, () => {
 
 const io = new Server(server);
 
-mongoose.connect('mongodb+srv://LeoRizza:password***@cluster0.yhmy0qn.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://LeoRizza:pasword***@cluster0.yhmy0qn.mongodb.net/?retryWrites=true&w=majority')
     .then(async () => {
         console.log('BDD conectada')
     })
@@ -32,16 +33,22 @@ app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')));
 
 io.on('connection', async (socket) => {
-    console.log("Servidor Socket.io conectaado");
+    console.log("Servidor Socket.io conectado");
     socket.on('mensajeConexion', (info) => {
         console.log(info);
     });
+
     try {
         const messages = await messageModel.find().sort({ postTime: 1 }).lean();
         socket.emit('mensajesPrevios', messages);
+
+        const productos = await productModel.find();
+        socket.emit('productos', productos); // Emitir los productos al cliente
+
     } catch (error) {
-        console.error('Error al obtener mensajes previos:', error);
+        console.error('Error al obtener mensajes previos o productos:', error);
     }
+
     socket.on('enviarMensaje', async (data) => {
         try {
             const newMessage = new messageModel(data);
@@ -53,6 +60,7 @@ io.on('connection', async (socket) => {
         }
     });
 });
+
 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');

@@ -1,29 +1,18 @@
-//wewee//
-const socket = io(); // Conéctate al servidor Socket.io
+const socket = io();
 
-function verDetalles(productId) {
-    // Enviar una solicitud para obtener los detalles del producto
-    socket.emit('getProductDetails', productId);
-}
+socket.on('productos', (productos) => {
+    const listaProductos = document.getElementById('listaProductos');
+    listaProductos.innerHTML = '';
 
-socket.on('productDetails', (product) => {
-    // Recibe los detalles del producto y muestra en el DOM
-    mostrarDetallesEnDOM(product);
+    productos.forEach((producto) => {
+        const listItem = document.createElement('div');
+        listItem.innerHTML = `
+            <h2>${producto.title}</h2>
+            <p>${producto.description}</p>
+            <p>Precio: $${producto.price}</p>
+            <p>Categoría: ${producto.category}</p>
+            <button onclick="agregarAlCarrito('${producto._id}')">Agregar al Carrito</button>
+        `;
+        listaProductos.appendChild(listItem);
+    });
 });
-
-socket.on('productDetailsError', (errorMessage) => {
-    // Manejar errores, por ejemplo, mostrar un mensaje de error
-    console.error(errorMessage);
-});
-
-function mostrarDetallesEnDOM(product) {
-    // Actualizar el DOM para mostrar los detalles del producto
-    const detallesDiv = document.getElementById('detallesProducto');
-    detallesDiv.innerHTML = `
-        <h2>Detalles del Producto</h2>
-        <p>Nombre: ${product.title}</p>
-        <p>Descripción: ${product.description}</p>
-        <p>Precio: $${product.price}</p>
-        <p>Categoría: ${product.category}</p>
-    `;
-}

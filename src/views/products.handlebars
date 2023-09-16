@@ -1,16 +1,17 @@
 <h1>{{ titulo }}</h1>
+<div>
+    <div id="listaProductos">
+    </div>
 
-<ul>
-    {{#each productos}}
-    <li>
-        <h2>{{ this.title }}</h2>
-        <p>{{ this.description }}</p>
-        <p>Precio: ${{ this.price }}</p>
-        <p>Categoría: {{ this.category }}</p>
-        <button onclick="verDetalles('{{ this._id }}')">Ver Detalles</button>
-        <button onclick="agregarAlCarrito('{{ this._id }}')">Agregar al Carrito</button>
-    </li>
-    {{/each}}
-</ul>
+    <div id="detallesProducto"></div>
+</>
 
-<div id="detallesProducto"></div>
+{{!-- <script src="/js/products.js"></script> --}}
+
+<script>
+window.onload = function() {
+    let script = document.createElement('script');
+    script.src = "/js/products.js";
+    document.body.appendChild(script);
+}
+</script>

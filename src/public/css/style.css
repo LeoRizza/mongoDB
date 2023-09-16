@@ -22,6 +22,10 @@ footer {
     border-radius: 5px;
 }
 
+#detallesProducto {
+    background-color: blue;
+}
+
 #messagesContainer {
     height: 400px;
     overflow-y: auto;
