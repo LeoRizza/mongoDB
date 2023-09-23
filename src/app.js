@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import express from 'express'
 import mongoose from 'mongoose'
 import userRouter from './routes/users.routes.js'
@@ -10,6 +11,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import { messageModel } from './models/messages.models.js';
 import { productModel } from './models/products.models.js'
+import cookieParser from 'cookie-parser'
 
 const app = express()
 const PORT = 8080;
@@ -23,14 +25,17 @@ const server = app.listen(PORT, () => {
 
 const io = new Server(server);
 
-mongoose.connect('mongodb+srv://LeoRizza:pasword***@cluster0.yhmy0qn.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect(process.env.MONGO_URL)
     .then(async () => {
         console.log('BDD conectada')
     })
     .catch(() => console.log('Error en conexion a BDD'))
 
-app.use(express.json())
+
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json())
+app.use(cookieParser(process.env.SIGNED_COOKIE))
+
 
 io.on('connection', async (socket) => {
     console.log("Servidor Socket.io conectado");
@@ -43,7 +48,7 @@ io.on('connection', async (socket) => {
         socket.emit('mensajesPrevios', messages);
 
         const productos = await productModel.find();
-        socket.emit('productos', productos); // Emitir los productos al cliente
+        socket.emit('productos', productos);
 
     } catch (error) {
         console.error('Error al obtener mensajes previos o productos:', error);
@@ -70,6 +75,15 @@ app.use('/api/users', userRouter)
 app.use('/api/products', productRouter)
 app.use('/api/carts', cartRouter)
 app.use('/api/chat', chatRouter);
+
+//cookies
+app.get('/setCookie', (req, res) => {
+    res.cookie('CookieCookie', 'Esto es una cookie', { maxAge: 10000, signed: true }).send('Cookie generada')
+})
+
+app.get('/getCookie', (req, res) => {
+    res.send(req.signedCookies)
+})
 
 app.get('/products', async (req, res) => {
     res.render('products', {
