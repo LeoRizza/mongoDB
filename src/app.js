@@ -54,15 +54,6 @@ app.use(session({
 }))
 
 
-const auth = (req, res, next) => {
-    if (req.session.email == "admin@admin.com" && req.session.password == "1234") {
-        next()
-    }
-
-    res.send("No tenes acceso a esta ruta")
-}
-
-
 io.on('connection', async (socket) => {
     console.log("Servidor Socket.io conectado");
     socket.on('mensajeConexion', (info) => {
@@ -103,15 +94,6 @@ app.use('/api/carts', cartRouter)
 app.use('/api/chat', chatRouter);
 app.use('/api/sessions', sessionRouter)
 
-//cookies
-app.get('/setCookie', (req, res) => {
-    res.cookie('CookieCookie', 'Esto es una cookie', { maxAge: 10000, signed: true }).send('Cookie generada')
-})
-
-app.get('/getCookie', (req, res) => {
-    res.send(req.signedCookies)
-})
-
 app.get('/products', async (req, res) => {
     res.render('products', {
         css: "style.css",
@@ -126,12 +108,10 @@ app.get('/chat', async (req, res) => {
     });
 });
 
-app.get('/session', (req, res) => {
-    if (req.session.counter) {
-        req.session.counter++
-        res.send(`Ingreso ${req.session.counter} veces`)
-    } else {
-        req.session.counter = 1
-        res.send('Ingreso por primera vez')
-    }
-})
+app.get('/home', async (req, res) => {
+    res.render('home', {
+        css: "style.css",
+        titulo: "Login",
+    });
+});
+
