@@ -55,6 +55,11 @@ footer {
     display: flex;
     flex-direction: column;
     text-align: center;
+    background-color: rgb(40, 40, 158);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 0 35vw;
+    font-size: 20px;
 }
 
 .contenedor {
