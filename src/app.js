@@ -12,6 +12,9 @@ import path from 'path';
 import { messageModel } from './models/messages.models.js';
 import { productModel } from './models/products.models.js'
 import cookieParser from 'cookie-parser'
+import session from 'express-session'
+import MongoStore from 'connect-mongo'
+import sessionRouter from './routes/session.routes.js'
 
 const app = express()
 const PORT = 8080;
@@ -35,6 +38,29 @@ mongoose.connect(process.env.MONGO_URL)
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json())
 app.use(cookieParser(process.env.SIGNED_COOKIE))
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_URL,
+        mongoOptions: {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        },
+        ttl: 60
+
+    }),
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+}))
+
+
+const auth = (req, res, next) => {
+    if (req.session.email == "admin@admin.com" && req.session.password == "1234") {
+        next()
+    }
+
+    res.send("No tenes acceso a esta ruta")
+}
 
 
 io.on('connection', async (socket) => {
@@ -75,6 +101,7 @@ app.use('/api/users', userRouter)
 app.use('/api/products', productRouter)
 app.use('/api/carts', cartRouter)
 app.use('/api/chat', chatRouter);
+app.use('/api/sessions', sessionRouter)
 
 //cookies
 app.get('/setCookie', (req, res) => {
@@ -98,3 +125,13 @@ app.get('/chat', async (req, res) => {
         titulo: "Chat",
     });
 });
+
+app.get('/session', (req, res) => {
+    if (req.session.counter) {
+        req.session.counter++
+        res.send(`Ingreso ${req.session.counter} veces`)
+    } else {
+        req.session.counter = 1
+        res.send('Ingreso por primera vez')
+    }
+})
