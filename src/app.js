@@ -123,3 +123,10 @@ app.get('/home', async (req, res) => {
     });
 });
 
+app.get('/register', async (req, res) => {
+    res.render('register', {
+        css: "style.css",
+        titulo: "Registrarme",
+    });
+});
+
