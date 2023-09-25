@@ -1,7 +1,13 @@
 <nav>
     <h1>Marca</h1>
     <ul>
-        <li>Login/Register</li>
+        {{#if login}}
+        <form action="/api/sessions/logout" method="GET">
+            <button type="submit">Cerrar sesión</button>
+        </form>
+        {{/if}}
+        <li>Login</li>
+        <li>Register</li>
         <li>Contacto</li>
         <li>Home</li>
     </ul>

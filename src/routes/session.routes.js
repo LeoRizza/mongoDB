@@ -16,7 +16,7 @@ sessionRouter.post('/login', async (req, res) => {
             if (user.password == password) {
                 req.session.login = true
                 /* res.status(200).send({ resultado: 'Login valido', message: user }) */
-                res.redirect('http://localhost:8080/products', 200, { 'info': 'user' }) //Redireccion
+                res.redirect('/products', 200, { 'info': 'user' }) //Redireccion
             } else {
                 res.status(401).send({ resultado: 'Contaseña no valida', message: password })
             }
@@ -33,8 +33,8 @@ sessionRouter.get('/logout', (req, res) => {
     if (req.session.login) {
         req.session.destroy()
     }
-    res.status(200).send({ resultado: 'Usuario deslogueado' })
-    /* res.redirect('rutaLogin', 200, { resultado: 'Usuario deslogueado' }) */
+    /* res.status(200).send({ resultado: 'Usuario deslogueado' }) */
+    res.redirect('/home', 200, { resultado: 'Usuario deslogueado' })
 })
 
 export default sessionRouter

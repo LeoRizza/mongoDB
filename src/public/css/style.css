@@ -12,6 +12,33 @@ footer {
     list-style: none;
 }
 
+.loginStyle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 35vw;
+    padding: 20px;
+    background-color: rgb(40, 40, 158);
+    border-radius: 10px;
+}
+
+#loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#loginForm button {
+    margin: 10px auto 0 auto;
+}
+
+#registroBtn {
+    display: flex;
+    margin: 10px auto;
+    font-size: 20px;
+}
+
 .contenedor {
     display: flex;
     flex-direction: column;
