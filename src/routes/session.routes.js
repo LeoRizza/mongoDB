@@ -19,7 +19,7 @@ sessionRouter.post('/login', async (req, res) => {
                 res.cookie('userData', {
                     firstName: user.first_name,
                     lastName: user.last_name,
-                    email: user.email,
+                    rol: user.rol,
                     
                 });
 
