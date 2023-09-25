@@ -95,16 +95,19 @@ app.use('/api/chat', chatRouter);
 app.use('/api/sessions', sessionRouter)
 
 app.get('/products', async (req, res) => {
+    const userDataCookie = req.cookies.userData;
     if (req.session.login) {
         res.render('products', {
             css: "style.css",
-            titulo: "Productos Ecomerce",
-            login: req.session.login
+            titulo: "Productos Ecommerce",
+            login: req.session.login,
+            userData: userDataCookie,
         });
     } else {
         res.redirect('/home');
     }
 });
+
 
 app.get('/chat', async (req, res) => {
     res.render('chat', {

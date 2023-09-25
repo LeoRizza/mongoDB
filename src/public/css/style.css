@@ -39,6 +39,24 @@ footer {
     font-size: 20px;
 }
 
+#registroForm {
+    display: flex;
+    margin: auto;
+    width: 200px;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#registroForm button {
+    margin: 10px auto 0 auto;
+}
+
+.registroStyle {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
 .contenedor {
     display: flex;
     flex-direction: column;

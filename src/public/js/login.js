@@ -36,3 +36,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+const registroBtn = document.getElementById('registroBtn');
+const registroForm = document.querySelector('.registroStyle');
+
+registroBtn.addEventListener('click', () => {
+    registroForm.style.display = 'flex';
+});

@@ -8,26 +8,34 @@ sessionRouter.post('/login', async (req, res) => {
 
     try {
         if (req.session.login) {
-            res.status(200).send({ resultado: 'Ya estas loggeado' })
+            res.status(200).send({ resultado: 'Ya estás loggeado' })
         }
         const user = await userModel.findOne({ email: email })
 
         if (user) {
             if (user.password == password) {
                 req.session.login = true
-                /* res.status(200).send({ resultado: 'Login valido', message: user }) */
-                res.redirect('/products', 200, { 'info': 'user' }) //Redireccion
+
+                res.cookie('userData', {
+                    firstName: user.first_name,
+                    lastName: user.last_name,
+                    email: user.email,
+                    
+                });
+
+                res.redirect('/products');
             } else {
-                res.status(401).send({ resultado: 'Contaseña no valida', message: password })
+                res.status(401).send({ resultado: 'Contraseña no válida', message: password })
             }
         } else {
-            res.status(404).send({ resultado: 'Not Found', message: user })
+            res.status(404).send({ resultado: 'Usuario no encontrado', message: user })
         }
 
     } catch (error) {
-        res.status(400).send({ error: `Error en Login: ${error}` })
+        res.status(400).send({ error: `Error en el inicio de sesión: ${error}` })
     }
 })
+
 
 sessionRouter.get('/logout', (req, res) => {
     if (req.session.login) {

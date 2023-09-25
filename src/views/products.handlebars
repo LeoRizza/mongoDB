@@ -1,17 +1,21 @@
-<h1>{{ titulo }}</h1>
+{{#if login}}
+<div class="welcome-message">
+    <p>Bienvenido, {{userData.firstName}} {{userData.lastName}}!</p>
+</div>
+{{/if}}
+
+<h2>{{ titulo }}</h2>
 <div>
     <div id="listaProductos">
     </div>
 
     <div id="detallesProducto"></div>
-</>
+    </>
 
-{{!-- <script src="/js/products.js"></script> --}}
-
-<script>
-window.onload = function() {
-    let script = document.createElement('script');
-    script.src = "/js/products.js";
-    document.body.appendChild(script);
-}
-</script>
+    <script>
+        window.onload = function () {
+            let script = document.createElement('script');
+            script.src = "/js/products.js";
+            document.body.appendChild(script);
+        }
+    </script>
