@@ -20,7 +20,6 @@ sessionRouter.post('/login', async (req, res) => {
                     firstName: user.first_name,
                     lastName: user.last_name,
                     rol: user.rol,
-                    
                 });
 
                 res.redirect('/products');
