@@ -1,5 +1,5 @@
-import 'dotenv/config'
+import bcrypt from 'bcrypt'
 
-export const createHash = (password) => bcrypt.hashSync(password, bcrypt.getSaltSync(parseInt(process.env.SALT)))
+export const createHash = (password) => bcrypt.hashSync(password, bcrypt.genSaltSync(parseInt(process.env.SALT)))
 
-export const validatePasword = (passwordSend, passwordBDD) => bcrypt.compareSync(passwordSend, passwordBDD)
+export const validatePassword = (passwordSend, passwordBDD) => bcrypt.compareSync(passwordSend, passwordBDD)

@@ -1,6 +1,8 @@
 import 'dotenv/config'
 import express from 'express'
 import mongoose from 'mongoose'
+import passport from 'passport'
+import initializePassport from './config/passport.js'
 import userRouter from './routes/users.routes.js'
 import productRouter from './routes/products.routes.js'
 import cartRouter from './routes/cart.routes.js'
@@ -52,7 +54,9 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }))
-
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 io.on('connection', async (socket) => {
     console.log("Servidor Socket.io conectado");
