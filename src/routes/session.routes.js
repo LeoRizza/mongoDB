@@ -16,7 +16,15 @@ sessionRouter.post('/login', passport.authenticate('login') , async (req, res) =
             email: req.user.email
         }
 
-        res.status(200).send({ payload: req.user })
+        /* res.status(200).send({ payload: req.user }) */
+        res.cookie('userData', {
+            firstName: user.first_name,
+            lastName: user.last_name,
+            rol: user.rol,
+        });
+
+        res.redirect('/products');
+        /* Probando */
     } catch(error) {
         res.status(500).send({ mensaje: 'Error al iniciar session ${error}'})
     }
@@ -28,10 +36,19 @@ sessionRouter.post('/register', passport.authenticate('register') , async (req, 
             return res.status(400).send({ mensaje: "Usuario ya existente" })
         }
 
-        res.status(200).send({ mensaje: "usuario creado" })
+        res.status(200).send({ mensaje: "Usuario creado" })
     } catch(error) {
         res.status(500).send({ mensaje: 'Error al crear usuario ${error}'})
     }
+})
+
+sessionRouter.get('/github', passport.authenticate('github', { scope: ['user:email'] }), async (req, res) => {
+
+})
+
+sessionRouter.get('/githubCallback', passport.authenticate('github'), async (req, res) => {
+    req.session.user = req.user
+    res.status(200).send({ mensaje: 'Usuario logueado' })
 })
 
 sessionRouter.get('/logout', (req, res) => {

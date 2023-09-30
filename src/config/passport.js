@@ -1,4 +1,5 @@
-import local, { Strategy } from 'passport-local'
+import local from 'passport-local'
+import GithubStrategy from 'passport-github2'
 import passport from 'passport'
 import { createHash, validatePassword } from '../utils/bcrypt.js'
 import { userModel } from '../models/users.models.js'
@@ -51,6 +52,35 @@ const initializePassport = () => {
                 return done(error)
             }
         }))
+
+    passport.use('github', new GithubStrategy({
+        clientID: process.env.CLIENT_ID,
+        clientSecret: process.env.SECRET_CLIENT,
+        callbackURL: process.env.CALLBACK_URL
+    }, async (accessToken, refreshToken, profile, done) => {
+        try {
+            console.log(accessToken)
+            console.log(refreshToken)
+            console.log(profile._json)
+            const user = await userModel.findOne({ email: profile._json.email })
+            if (user) {
+                done(null, false)
+            } else {
+                const userCreated = await userModel.create({
+                    first_name: profile._json.name,
+                    last_name: ' ',
+                    email: profile._json.email,
+                    age: 18, //Edad por defecto
+                    password: createHash(profile._json.email + profile._json.name)
+                })
+                done(null, userCreated)
+            }
+
+
+        } catch (error) {
+            done(error)
+        }
+    }))
 
     passport.serializeUser((user, done) => {
         done(null, user._id)
