@@ -1,14 +1,41 @@
 import local from 'passport-local'
 import GithubStrategy from 'passport-github2'
+import jwt from 'passport-jwt'
 import passport from 'passport'
 import { createHash, validatePassword } from '../utils/bcrypt.js'
 import { userModel } from '../models/users.models.js'
 
 const LocalStrategy = local.Strategy
+const JWTStrategy = jwt.Strategy
+const ExtractJWT = jwt.ExtractJwt
 
 const initializePassport = () => {
+
+    const cookieExtractor = req => {
+        const token = req.cookies.jwtCookie ? req.cookies.jwtCookie : {}
+
+        console.log("cookieExtractor", token)
+
+        return token
+
+    }
+
+    passport.use('jwt', new JWTStrategy({
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]), 
+        secretOrKey: process.env.JWT_SECRET
+    }, async (jwt_payload, done) => { 
+        try {
+            console.log("JWT", jwt_payload)
+            return done(null, jwt_payload)
+        } catch (error) {
+            return done(error)
+        }
+
+    }))
+
     passport.use('register', new LocalStrategy(
         { passReqToCallback: true, usernameField: 'email' }, async (req, username, password, done) => {
+
             const { first_name, last_name, email, age } = req.body
 
             try {
@@ -32,8 +59,8 @@ const initializePassport = () => {
             } catch (error) {
                 return done(error)
             }
-
         }))
+
     passport.use('login', new LocalStrategy(
         { usernameField: 'email' }, async (username, password, done) => {
             try {
@@ -42,6 +69,7 @@ const initializePassport = () => {
                 if (!user) {
                     return done(null, false)
                 }
+
                 if (validatePassword(password, user.password)) {
                     return done(null, user)
                 }
@@ -52,6 +80,7 @@ const initializePassport = () => {
                 return done(error)
             }
         }))
+
 
     passport.use('github', new GithubStrategy({
         clientID: process.env.CLIENT_ID,
@@ -90,6 +119,7 @@ const initializePassport = () => {
         const user = await userModel.findById(id)
         done(null, user)
     })
+
 }
 
 export default initializePassport
