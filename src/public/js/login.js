@@ -42,3 +42,9 @@ const registroBtn = document.getElementById('registroBtn');
 registroBtn.addEventListener('click', () => {
     window.location.href = "/register";
 });
+
+const githubBtn = document.getElementById('githubBtn');
+
+githubBtn.addEventListener('click', () => {
+    window.location.href = "/github";
+});

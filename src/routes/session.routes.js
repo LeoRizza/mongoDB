@@ -18,12 +18,13 @@ sessionRouter.post('/login', passport.authenticate('login') , async (req, res) =
 
         /* res.status(200).send({ payload: req.user }) */
         res.cookie('userData', {
-            firstName: user.first_name,
-            lastName: user.last_name,
-            rol: user.rol,
-        });
+            firstName: req.user.first_name,
+            lastName: req.user.last_name,
+            rol: req.user.rol,
+        });        
 
-        res.redirect('/products');
+        res.redirect(302, '/products'); // 302 es el código de estado para una redirección temporal
+
         /* Probando */
     } catch(error) {
         res.status(500).send({ mensaje: 'Error al iniciar session ${error}'})
