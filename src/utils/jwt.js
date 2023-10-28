@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 
 export const generateToken = (user) => {
 
-    const token = jwt.sign({ user }, "mamacoco123", { expiresIn: '24h' })
+    const token = jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: '24h' })
     console.log("cookieExtractor", token)
 
     return token
