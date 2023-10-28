@@ -19,7 +19,7 @@ export const authToken = (req, res, next) => {
         return res.status(401).send({ error: 'Usuario no autenticado' })
     }
 
-    const token = authHeader.split(' ')[1]
+    const token = authHeader.split(' ')[1]//borro el espacio y me quedo con el token [1] (bearer seria el 0)
 
     jwt.sign(token, process.env.JWT_SECRET, (error, credential) => {
         if (error) {

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { productModel } from "../models/products.models.js";
+import { passportError, authorization } from "../utils/messagesError.js";
 
 const productRouter = Router()
 
@@ -42,7 +43,7 @@ productRouter.get('/:id', async (req, res) => {
     }
 })
 
-productRouter.post('/', async (req, res) => {
+productRouter.post('/', passportError('jwt'), authorization('admin'), async (req, res) => {
     const { title, description, stock, code, price, category } = req.body
     try {
         const prod = await productModel.create({ title, description, stock, code, price, category })
@@ -52,7 +53,7 @@ productRouter.post('/', async (req, res) => {
     }
 })
 
-productRouter.put('/:id', async (req, res) => {
+productRouter.put('/:id', passportError('jwt'), authorization('admin'), async (req, res) => {
     const { id } = req.params
     const { title, description, stock, status, code, price, category } = req.body
 
@@ -67,7 +68,7 @@ productRouter.put('/:id', async (req, res) => {
     }
 })
 
-productRouter.delete('/:id', async (req, res) => {
+productRouter.delete('/:id', passportError('jwt'), authorization('admin'), async (req, res) => {
     const { id } = req.params
 
     try {

@@ -3,10 +3,6 @@ import express from 'express'
 import mongoose from 'mongoose'
 import passport from 'passport'
 import initializePassport from './config/passport.js'
-import userRouter from './routes/users.routes.js'
-import productRouter from './routes/products.routes.js'
-import cartRouter from './routes/cart.routes.js'
-import chatRouter from './routes/chat.routes.js'
 import { engine } from 'express-handlebars';
 import { Server } from 'socket.io';
 import { fileURLToPath } from 'url';
@@ -16,7 +12,7 @@ import { productModel } from './models/products.models.js'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
-import sessionRouter from './routes/session.routes.js'
+import router from './routes/index.routes.js'
 
 const app = express()
 const PORT = 8080;
@@ -92,11 +88,7 @@ app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', path.resolve(__dirname, './views'));
 
-app.use('/api/users', userRouter)
-app.use('/api/products', productRouter)
-app.use('/api/carts', cartRouter)
-app.use('/api/chat', chatRouter);
-app.use('/api/sessions', sessionRouter)
+app.use('/', router)
 
 app.get('/products', async (req, res) => {
     const userDataCookie = req.cookies.userData;
