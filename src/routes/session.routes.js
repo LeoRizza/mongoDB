@@ -1,6 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import { passportError, authorization } from "../utils/messagesError.js";
+import { generateToken } from "../utils/jwt.js";
 
 const sessionRouter = Router()
 
@@ -17,16 +18,12 @@ sessionRouter.post('/login', passport.authenticate('login') , async (req, res) =
             email: req.user.email
         }
 
+        const token = generateToken(req.user)
+        res.cookie('jwtCookie', token, {
+            maxAge: 43200000
+        })
+
         res.status(200).send({ payload: req.user })
-        /* res.cookie('userData', {
-            firstName: req.user.first_name,
-            lastName: req.user.last_name,
-            rol: req.user.rol,
-        });        
-
-        res.redirect(302, '/products'); */
-
-        /* Probando */
     } catch(error) {
         res.status(500).send({ mensaje: 'Error al iniciar session ${error}'})
     }
@@ -60,10 +57,10 @@ sessionRouter.get('/logout', (req, res) => {
     res.redirect('/home', 200, { resultado: 'Usuario deslogueado' })
 })
 
-sessionRouter.get('/testJWT', passport.authenticate('jwt', { session: false }), (req, res) => {
+/* sessionRouter.get('/testJWT', passport.authenticate('jwt', { session: false }), (req, res) => {
     console.log(req)
     res.send(req.user)
-})
+}) */
 
 sessionRouter.get('/current', passportError('jwt'), authorization('user'), (req, res) => {
     res.send(req.user)
