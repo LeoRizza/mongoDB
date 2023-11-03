@@ -54,6 +54,7 @@ sessionRouter.get('/logout', (req, res) => {
     if (req.session.login) {
         req.session.destroy()
     }
+    res.clearCookie('jwtCookie')
     res.redirect('/home', 200, { resultado: 'Usuario deslogueado' })
 })
 

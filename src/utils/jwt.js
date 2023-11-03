@@ -8,8 +8,6 @@ export const generateToken = (user) => {
     return token
 
 }
-generateToken({"_id":"6511c5fddbccc74d49679e92","first_name":"Pepito","last_name":"Perez","age":"29","email":"dalsgfasida@homasiomf","password":"qwerty","rol":"user"})
-
 
 export const authToken = (req, res, next) => {
     const authHeader = req.headers.Authorization

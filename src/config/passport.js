@@ -14,7 +14,7 @@ const initializePassport = () => {
     const cookieExtractor = req => {
         const token = req.cookies.jwtCookie ? req.cookies.jwtCookie : {}
 
-        console.log("cookieExtractor", token)
+        /* console.log("cookieExtractor", token) */
 
         return token
 
@@ -25,7 +25,7 @@ const initializePassport = () => {
         secretOrKey: process.env.JWT_SECRET
     }, async (jwt_payload, done) => { 
         try {
-            console.log("JWT", jwt_payload)
+            /* console.log("JWT", jwt_payload) */
             return done(null, jwt_payload)
         } catch (error) {
             return done(error)
@@ -99,7 +99,7 @@ const initializePassport = () => {
                     first_name: profile._json.name,
                     last_name: ' ',
                     email: profile._json.email,
-                    age: 18, //Edad por defecto
+                    age: 18,
                     password: createHash(profile._json.email + profile._json.name)
                 })
                 done(null, userCreated)
