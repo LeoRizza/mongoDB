@@ -31,7 +31,7 @@ cartRouter.post('/', async (req, res) => {
     }
 })
 
-cartRouter.post('/:cid/products/:pid', async (req, res) => {
+/* cartRouter.post('/:cid/products/:pid', async (req, res) => {
     const { cid, pid } = req.params
     const { quantity } = req.body
 
@@ -60,7 +60,7 @@ cartRouter.post('/:cid/products/:pid', async (req, res) => {
         console.log(error)
         res.status(400).send({ respuesta: 'Error en agregar producto Carrito', mensaje: error })
     }
-})
+}) */
 
 cartRouter.put('/:cid/products/:pid', async (req, res) => {
     const { cid, pid } = req.params;
